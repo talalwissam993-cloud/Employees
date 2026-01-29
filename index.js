@@ -12,10 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 mongoose
-    .connect("mongodb+srv://wissamtalal999:wissamtalal999@cluster0.gteqxep.mongodb.net/", {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+    .connect("mongodb+srv://wissamtalal999:wissamtalal999@cluster0.gteqxep.mongodb.net/")
     .then(() => {
         console.log("Connected to MongoDB");
     })
