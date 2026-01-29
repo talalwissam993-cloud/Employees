@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const app = express();
 const port = 8000;
@@ -11,7 +12,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 mongoose
-    .connect("mongodb+srv://wissamtalal999:wissamtalal999@cluster0.gteqxep.mongodb.net")
+    .connect("mongodb+srv://sujan:sujan@cluster0.zv7uvht.mongodb.net/", {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
     .then(() => {
         console.log("Connected to MongoDB");
     })
@@ -22,8 +26,6 @@ mongoose
 app.listen(port, () => {
     console.log("Server is running on port 8000");
 });
-
-// Start of Employee and Attendance endpoints
 
 const Employee = require("./models/employee");
 const Attendance = require("./models/attendance");
@@ -205,5 +207,4 @@ app.get("/attendance-report-all-employees", async (req, res) => {
         res.status(500).json({ message: "Error generating the report" });
     }
 });
-
 
