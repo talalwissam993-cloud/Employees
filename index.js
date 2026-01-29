@@ -210,22 +210,21 @@ app.get("/attendance-report/:employeeId", async (req, res) => {
     try {
         const { employeeId } = req.params;
         const { month, year } = req.query;
-        // Calculate the start and end dates for the selected month and year
-        const startDate = moment(`${year}-${month}-01`, "YYYY-MM-DD")
-            .startOf("month")
-            .toDate();
-        const endDate = moment(startDate).endOf("month").toDate();
+
+        // Create a regex pattern: ^2026-01 (Matches any date starting with this)
+        const datePattern = `^${year}-${month}`;
+
         const report = await Attendance.find({
             employeeId: employeeId,
-            date: {
-                $gte: moment(startDate).format("YYYY-MM-DD"),
-                $lte: moment(endDate).format("YYYY-MM-DD"),
-            },
-        });
+            date: { $regex: new RegExp(datePattern) }
+        }).sort({ date: 1 }); // Added sort so the list is in order (1st to 31st)
+
         res.status(200).json({ report });
     } catch (error) {
-        console.error("Error generating attendance report for employee:", error);
+        console.error("Error fetching individual report:", error);
         res.status(500).json({ message: "Error generating the report" });
+    }
+});
     }
 });
 
